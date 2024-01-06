@@ -3,7 +3,8 @@ from datetime import datetime
 import shelve
 
 class Account:
-    def __init__(self, first_name: str, last_name: str, date_of_birth: datetime, email: str, password: str, gender: int, receive_newsletters: bool):
+    def __init__(self, id: str, first_name: str, last_name: str, date_of_birth: datetime, email: str, password: str, gender: int, receive_newsletters: bool):
+        self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -14,6 +15,8 @@ class Account:
 
     def validate(self) -> bool:
         # Check if all required fields are filled
+        if not self.id or len(self.id) == 0:
+            return False
         if not self.first_name or len(self.first_name) == 0:
             return False
         if not self.last_name or len(self.last_name) == 0:
@@ -44,7 +47,8 @@ class Account:
     
     def __eq__(self, other):
         if isinstance(other, Account):
-            return (self.first_name == other.first_name and
+            return (self.id == other.id and
+                    self.first_name == other.first_name and
                     self.last_name == other.last_name and
                     self.date_of_birth == other.date_of_birth and
                     self.email == other.email and

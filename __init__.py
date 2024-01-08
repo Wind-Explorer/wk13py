@@ -30,6 +30,32 @@ def signup():
     else:
         # 显示注册表单
         return render_template('signup.html')
+    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # 获取表单数据
+        email = request.form['email']
+        password = request.form['password']
+        
+        # 创建 AccountsManagement 实例
+        account_manager = AccountsManagement("accounts")
+        
+        # 验证用户的身份
+        user_id = account_manager.login(email, password)
+        if user_id is not None:
+            # 如果用户 ID 不为 None，说明登录成功
+            print("Login successful, user ID: " + user_id)
+            # 重定向到首页
+            return redirect(url_for('home'))
+        else:
+            # 如果用户 ID 为 None，说明登录失败
+            print("Login failed")
+            # 重新显示登录表单
+            return render_template('login.html', error="Invalid email or password")
+    else:
+        # 显示登录表单
+        return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

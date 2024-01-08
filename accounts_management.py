@@ -110,3 +110,14 @@ class AccountsManagement:
             # Delete the account from the database
             del db[email]
         return True
+    
+    def login(self, email: str, password: str) -> str:
+        with shelve.open(self.db_path) as db:
+            # Retrieve the account from the database
+            account = db.get(email)
+            # Check if the account exists and the password is correct
+            if account is not None and account.password == password:
+                # Return the user's ID
+                return account.id
+        # If the account does not exist or the password is incorrect, return None
+        return None

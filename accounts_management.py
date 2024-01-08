@@ -1,10 +1,11 @@
 import re
 from datetime import datetime
 import shelve
+from uuid import uuid4
 
 class Account:
-    def __init__(self, id: str, first_name: str, last_name: str, date_of_birth: datetime, email: str, password: str, gender: int, receive_newsletters: bool):
-        self.id = id
+    def __init__(self, first_name: str, last_name: str, date_of_birth: datetime, email: str, password: str, gender: int, receive_newsletters: bool):
+        self.id = str(uuid4())
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth

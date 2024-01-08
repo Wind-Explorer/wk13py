@@ -12,7 +12,6 @@ def home():
 def signup():
     if request.method == 'POST':
         # 获取表单数据
-        id = request.form['id']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         date_of_birth = datetime.strptime(request.form['date_of_birth'], '%Y-%m-%d')
@@ -22,7 +21,7 @@ def signup():
         receive_newsletters = 'receive_newsletters' in request.form
         
         account_manager = AccountsManagement("accounts")
-        new_account = Account(id, first_name, last_name, date_of_birth, email, password, gender, receive_newsletters)
+        new_account = Account(first_name, last_name, date_of_birth, email, password, gender, receive_newsletters)
         print("account created: " + str(account_manager.create_account(account=new_account)))
         
         # 重定向到首页

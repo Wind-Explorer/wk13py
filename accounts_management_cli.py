@@ -2,7 +2,7 @@ from accounts_management import Account, AccountsManagement
 from datetime import datetime
 
 def main():
-    accounts_management = AccountsManagement('accounts.db')
+    accounts_management = AccountsManagement('accounts')
 
     while True:
         print('What would you like to do?')

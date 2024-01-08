@@ -16,23 +16,32 @@ class Account:
     def validate(self) -> bool:
         # Check if all required fields are filled
         if not self.id or len(self.id) == 0:
+            print("ID is missing or empty")
             return False
         if not self.first_name or len(self.first_name) == 0:
+            print("First name is missing or empty")
             return False
         if not self.last_name or len(self.last_name) == 0:
+            print("Last name is missing or empty")
             return False
         if not self.email or len(self.email) == 0:
+            print("Email is missing or empty")
             return False
         if not self.password or len(self.password) == 0:
+            print("Password is missing or empty")
             return False
         # Check if email format is valid
         if not self._validate_email_format():
+            print("Email format is invalid")
             return False
         # Check if gender is valid
         if self.gender not in [0, 1, 2]:
+            print("gender is " + str(self.gender))
+            print("Gender is invalid")
             return False
         # Check if birth datetime is before current datetime
         if not self._validate_birth_datetime():
+            print("Birth datetime is not before current datetime")
             return False
         return True
     
@@ -63,14 +72,17 @@ class AccountsManagement:
 
     def create_account(self, account: Account) -> bool:
         if not account.validate():
+            print("account validation failed")
             return False
         
         with shelve.open(self.db_path) as db:
             # Check if account with the same email already exists
             if account.email in db:
+                print("account with email already exists")
                 return False
             # Save the account to the database
             db[account.email] = account
+            print("account created without problem")
         return True
     
     def get_account(self, email: str) -> Account:

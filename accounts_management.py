@@ -70,7 +70,7 @@ class Account:
 class AccountsManagement:
     def __init__(self, db_path: str):
         self.db_path = db_path
-
+    
     def create_account(self, account: Account) -> bool:
         if not account.validate():
             print("account validation failed")
@@ -86,39 +86,44 @@ class AccountsManagement:
             print("account created without problem")
         return True
     
-    def get_account(self, email: str) -> Account:
+    def get_account_by_id(self, account_id: str) -> Account:
         with shelve.open(self.db_path) as db:
             # Retrieve the account from the database
-            return db.get(email)
+            for account in db.values():
+                if account.id == account_id:
+                    return account
+        return None
     
-    def update_account(self, email: str, account: Account) -> bool:
+    def update_account(self, account_id: str, account: Account) -> bool:
         if not account.validate():
             return False
-
+        
         with shelve.open(self.db_path) as db:
             # Check if the account to be updated exists
-            if email not in db:
-                return False
-            # Update the account in the database
-            db[email] = account
-        return True
-
-    def delete_account(self, email: str) -> bool:
+            for key, value in db.items():
+                if value.id == account_id:
+                    # Update the account in the database
+                    db[key] = account
+                    return True
+        return False
+    
+    def delete_account(self, account_id: str) -> bool:
         with shelve.open(self.db_path) as db:
             # Check if the account to be deleted exists
-            if email not in db:
-                return False
-            # Delete the account from the database
-            del db[email]
-        return True
+            for key, value in db.items():
+                if value.id == account_id:
+                    # Delete the account from the database
+                    del db[key]
+                    return True
+        return False
     
     def login(self, email: str, password: str) -> str:
         with shelve.open(self.db_path) as db:
             # Retrieve the account from the database
-            account = db.get(email)
-            # Check if the account exists and the password is correct
-            if account is not None and account.password == password:
-                # Return the user's ID
-                return account.id
+            for account in db.values():
+                # Check if the account exists and the password is correct
+                if account.email == email and account.password == password:
+                    # Return the user's ID
+                    return account.id
         # If the account does not exist or the password is incorrect, return None
         return None

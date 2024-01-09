@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Order Management</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+
 <body>
     <h1>Order Management</h1>
 
@@ -28,40 +30,40 @@
     </form>
 
     <h2>Update Order</h2>
-<form id="updateOrderForm">
-    User ID: <input type="text" id="updateUserId"><br>
-    Order ID: <input type="text" id="updateOrderId"><br>
-    State: <input type="text" id="updateState"><br>
-    Order Date: <input type="date" id="updateOrderDate"><br>
-    Estimated Arrival Date: <input type="date" id="updateEstimatedArrivalDate"><br>
-    <input type="submit" value="Update Order">
-</form>
+    <form id="updateOrderForm">
+        User ID: <input type="text" id="updateUserId"><br>
+        Order ID: <input type="text" id="updateOrderId"><br>
+        State: <input type="text" id="updateState"><br>
+        Order Date: <input type="date" id="updateOrderDate"><br>
+        Estimated Arrival Date: <input type="date" id="updateEstimatedArrivalDate"><br>
+        <input type="submit" value="Update Order">
+    </form>
     <script>
-        $("#addOrderForm").submit(function(e) {
+        $("#addOrderForm").submit(function (e) {
             e.preventDefault();
             $.post("/add_order", { user_id: $("#addUserId").val(), order: $("#newOrder").val() })
-                .done(function(data) {
+                .done(function (data) {
                     alert("Order added successfully");
                 });
         });
 
-        $("#getOrderForm").submit(function(e) {
+        $("#getOrderForm").submit(function (e) {
             e.preventDefault();
             $.get("/get_order", { user_id: $("#getUserId").val(), order_id: $("#getOrderId").val() })
-                .done(function(data) {
+                .done(function (data) {
                     alert(JSON.stringify(data));
                 });
         });
 
-        $("#getAllOrdersForm").submit(function(e) {
+        $("#getAllOrdersForm").submit(function (e) {
             e.preventDefault();
             $.get("/get_all_orders", { user_id: $("#getAllUserId").val() })
-                .done(function(data) {
+                .done(function (data) {
                     alert(JSON.stringify(data));
                 });
         });
 
-        $("#updateOrderForm").submit(function(e) {
+        $("#updateOrderForm").submit(function (e) {
             e.preventDefault();
             $.ajax({
                 url: '/update_order',
@@ -73,14 +75,15 @@
                     order_date: $("#updateOrderDate").val(),
                     estimated_arrival_date: $("#updateEstimatedArrivalDate").val()
                 },
-                success: function(data) {
+                success: function (data) {
                     alert(data.message);
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     alert('Error: ' + error);
                 }
             });
         });
     </script>
 </body>
+
 </html>

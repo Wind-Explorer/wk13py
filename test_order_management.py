@@ -5,6 +5,7 @@ import uuid
 
 from order_management import OrderManagement, OrderWithState
 
+
 class TestOrderManagement(unittest.TestCase):
     def setUp(self):
         self.db_path = "test_db.db"
@@ -55,6 +56,7 @@ class TestOrderManagement(unittest.TestCase):
         new_state = 1
         result = self.order_management.update_order(order_id, new_state)
         self.assertFalse(result)
+
 
 if __name__ == "__main__":
     unittest.main()

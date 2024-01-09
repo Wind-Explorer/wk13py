@@ -3,8 +3,18 @@ from datetime import datetime
 import shelve
 from uuid import uuid4
 
+
 class Account:
-    def __init__(self, first_name: str, last_name: str, date_of_birth: datetime, email: str, password: str, gender: int, receive_newsletters: bool):
+    def __init__(
+        self,
+        first_name: str,
+        last_name: str,
+        date_of_birth: datetime,
+        email: str,
+        password: str,
+        gender: int,
+        receive_newsletters: bool,
+    ):
         self.id = str(uuid4())
         self.first_name = first_name
         self.last_name = last_name
@@ -45,37 +55,40 @@ class Account:
             print("Birth datetime is not before current datetime")
             return False
         return True
-    
+
     def _validate_birth_datetime(self) -> bool:
         current_datetime = datetime.now()
         return self.date_of_birth < current_datetime
-    
+
     def _validate_email_format(self) -> bool:
         # Email format validation using regular expression
-        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         return re.match(pattern, self.email) is not None
-    
+
     def __eq__(self, other):
         if isinstance(other, Account):
-            return (self.id == other.id and
-                    self.first_name == other.first_name and
-                    self.last_name == other.last_name and
-                    self.date_of_birth == other.date_of_birth and
-                    self.email == other.email and
-                    self.password == other.password and
-                    self.gender == other.gender and
-                    self.receive_newsletters == other.receive_newsletters)
+            return (
+                self.id == other.id
+                and self.first_name == other.first_name
+                and self.last_name == other.last_name
+                and self.date_of_birth == other.date_of_birth
+                and self.email == other.email
+                and self.password == other.password
+                and self.gender == other.gender
+                and self.receive_newsletters == other.receive_newsletters
+            )
         return False
+
 
 class AccountsManagement:
     def __init__(self, db_path: str):
         self.db_path = db_path
-    
+
     def create_account(self, account: Account) -> bool:
         if not account.validate():
             print("account validation failed")
             return False
-        
+
         with shelve.open(self.db_path) as db:
             # Check if account with the same email already exists
             if account.email in db:
@@ -85,7 +98,7 @@ class AccountsManagement:
             db[account.email] = account
             print("account created without problem")
         return True
-    
+
     def get_account_by_id(self, account_id: str) -> Account:
         with shelve.open(self.db_path) as db:
             # Retrieve the account from the database
@@ -93,11 +106,11 @@ class AccountsManagement:
                 if account.id == account_id:
                     return account
         return None
-    
+
     def update_account(self, account_id: str, account: Account) -> bool:
         if not account.validate():
             return False
-        
+
         with shelve.open(self.db_path) as db:
             # Check if the account to be updated exists
             for key, value in db.items():
@@ -106,7 +119,7 @@ class AccountsManagement:
                     db[key] = account
                     return True
         return False
-    
+
     def delete_account(self, account_id: str) -> bool:
         with shelve.open(self.db_path) as db:
             # Check if the account to be deleted exists
@@ -116,7 +129,7 @@ class AccountsManagement:
                     del db[key]
                     return True
         return False
-    
+
     def login(self, email: str, password: str) -> str:
         with shelve.open(self.db_path) as db:
             # Retrieve the account from the database

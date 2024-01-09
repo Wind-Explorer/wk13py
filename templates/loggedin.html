@@ -7,7 +7,7 @@
 </head>
 <body>
     <p>Logged in with ID of: {{ user_id }}</p>
-    
+    <button id="delete-account">Delete this account</button>
     <button id="fetch-account-info">Fetch Account Info</button>
     <div id="account-info"></div>
     
@@ -24,6 +24,20 @@
                 $("#account-info").html(accountInfoHtml);
             });
         });
+
+        $("#delete-account").click(function(){
+        var userid = "{{ user_id }}";  // 获取用户 ID
+        $.ajax({
+            url: '/delete_account?account_id=' + userid,
+            type: 'DELETE',
+            success: function(result) {
+                alert(result.message);
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    });
     });
     </script>
 

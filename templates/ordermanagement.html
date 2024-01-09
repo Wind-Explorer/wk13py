@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Order Management</h1>
+
+    <h2>Add Order</h2>
+    <form id="addOrderForm">
+        User ID: <input type="text" id="addUserId"><br>
+        Order: <textarea id="newOrder"></textarea><br>
+        <input type="submit" value="Add Order">
+    </form>
+
+    <h2>Get Order</h2>
+    <form id="getOrderForm">
+        User ID: <input type="text" id="getUserId"><br>
+        Order ID: <input type="text" id="getOrderId"><br>
+        <input type="submit" value="Get Order">
+    </form>
+
+    <h2>Get All Orders</h2>
+    <form id="getAllOrdersForm">
+        User ID: <input type="text" id="getAllUserId"><br>
+        <input type="submit" value="Get All Orders">
+    </form>
+
+    <h2>Update Order</h2>
+<form id="updateOrderForm">
+    User ID: <input type="text" id="updateUserId"><br>
+    Order ID: <input type="text" id="updateOrderId"><br>
+    State: <input type="text" id="updateState"><br>
+    Order Date: <input type="date" id="updateOrderDate"><br>
+    Estimated Arrival Date: <input type="date" id="updateEstimatedArrivalDate"><br>
+    <input type="submit" value="Update Order">
+</form>
+    <script>
+        $("#addOrderForm").submit(function(e) {
+            e.preventDefault();
+            $.post("/add_order", { user_id: $("#addUserId").val(), order: $("#newOrder").val() })
+                .done(function(data) {
+                    alert("Order added successfully");
+                });
+        });
+
+        $("#getOrderForm").submit(function(e) {
+            e.preventDefault();
+            $.get("/get_order", { user_id: $("#getUserId").val(), order_id: $("#getOrderId").val() })
+                .done(function(data) {
+                    alert(JSON.stringify(data));
+                });
+        });
+
+        $("#getAllOrdersForm").submit(function(e) {
+            e.preventDefault();
+            $.get("/get_all_orders", { user_id: $("#getAllUserId").val() })
+                .done(function(data) {
+                    alert(JSON.stringify(data));
+                });
+        });
+
+        $("#updateOrderForm").submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/update_order',
+                type: 'PUT',
+                data: {
+                    user_id: $("#updateUserId").val(),
+                    order_id: $("#updateOrderId").val(),
+                    state: $("#updateState").val(),
+                    order_date: $("#updateOrderDate").val(),
+                    estimated_arrival_date: $("#updateEstimatedArrivalDate").val()
+                },
+                success: function(data) {
+                    alert(data.message);
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for
 from accounts_management import Account
 
 from accounts_management import Account, AccountsManagement
+from order_management import OrderManagement, OrderWithState
 app = Flask(__name__)
 
 @app.route('/')
@@ -70,6 +71,69 @@ def get_account_info():
     if account is None:
         return jsonify({'error': 'Account not found'}), 404
     return jsonify(account.__dict__)
+
+@app.route('/delete_account', methods=['DELETE'])
+def delete_account():
+    account_id = request.args.get('account_id')
+    accounts_manager = AccountsManagement("accounts")
+    if account_id:
+        result = accounts_manager.delete_account(account_id)
+        if result:
+            return jsonify({'message': 'Account deleted successfully'}), 303
+        else:
+            return jsonify({'message': 'Account not found'}), 404
+    else:
+        return jsonify({'message': 'Account ID is required'}), 400
+
+@app.route('/order_management')
+def order_management():
+    return render_template('ordermanagement.html')
+
+@app.route('/add_order', methods=['POST'])
+def add_order():
+    user_id = request.form.get('user_id')
+    new_order = request.form.get('order')
+    print("userid: " + user_id)
+    order_management = OrderManagement(user_id, "orders")
+    order_management.add_order(new_order)
+    return jsonify({'message': 'Order added successfully'})
+
+@app.route('/get_order', methods=['GET'])
+def get_orders():
+    user_id = request.args.get('user_id')
+    order_id = request.args.get('order_id')
+    order_management = OrderManagement(user_id, "orders")
+    order = order_management.get_order(order_id)
+    if order is None:
+        return jsonify({'error': 'Order not found'}), 404
+    return jsonify(order.to_dict())
+
+@app.route('/get_all_orders', methods=['GET'])
+def get_all_orders():
+    user_id = request.args.get('user_id')
+    order_management = OrderManagement(user_id, "orders")
+    orders = order_management.get_all_orders()
+    return jsonify([order.to_dict() for order in orders])
+
+@app.route('/update_order', methods=['PUT'])
+def update_order():
+    user_id = request.form.get('user_id')
+    order_id = request.form.get('order_id')
+    state = int(request.form.get('state'))
+    order_date = datetime.strptime(request.form.get('order_date'), '%Y-%m-%d')
+    estimated_arrival_date_str = request.form.get('estimated_arrival_date')
+    estimated_arrival_date = datetime.strptime(estimated_arrival_date_str, '%Y-%m-%d')
+    
+    order_management = OrderManagement(user_id, "orders")
+    order = order_management.get_order(order_id)
+    if order is None:
+        return jsonify({'error': 'Order not found'}), 404
+    
+    updated_order = OrderWithState(order.id, order.order, state, order_date, estimated_arrival_date)
+    order_management.update_order(updated_order)
+    
+    return jsonify({'message': 'Order updated successfully'})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -25,7 +25,6 @@ class Account:
         self.receive_newsletters = receive_newsletters
 
     def validate(self) -> bool:
-        # Check if all required fields are filled
         if not self.id or len(self.id) == 0:
             print("ID is missing or empty")
             return False
@@ -41,16 +40,13 @@ class Account:
         if not self.password or len(self.password) == 0:
             print("Password is missing or empty")
             return False
-        # Check if email format is valid
         if not self._validate_email_format():
             print("Email format is invalid")
             return False
-        # Check if gender is valid
         if self.gender not in [0, 1, 2]:
             print("gender is " + str(self.gender))
             print("Gender is invalid")
             return False
-        # Check if birth datetime is before current datetime
         if not self._validate_birth_datetime():
             print("Birth datetime is not before current datetime")
             return False
@@ -61,7 +57,6 @@ class Account:
         return self.date_of_birth < current_datetime
 
     def _validate_email_format(self) -> bool:
-        # Email format validation using regular expression
         pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         return re.match(pattern, self.email) is not None
 
@@ -90,18 +85,15 @@ class AccountsManagement:
             return False
 
         with shelve.open(self.db_path) as db:
-            # Check if account with the same email already exists
             if account.email in db:
                 print("account with email already exists")
                 return False
-            # Save the account to the database
             db[account.email] = account
             print("account created without problem")
         return True
 
     def get_account_by_id(self, account_id: str) -> Account:
         with shelve.open(self.db_path) as db:
-            # Retrieve the account from the database
             for account in db.values():
                 if account.id == account_id:
                     return account
@@ -112,31 +104,23 @@ class AccountsManagement:
             return False
 
         with shelve.open(self.db_path) as db:
-            # Check if the account to be updated exists
             for key, value in db.items():
                 if value.id == account_id:
-                    # Update the account in the database
                     db[key] = account
                     return True
         return False
 
     def delete_account(self, account_id: str) -> bool:
         with shelve.open(self.db_path) as db:
-            # Check if the account to be deleted exists
             for key, value in db.items():
                 if value.id == account_id:
-                    # Delete the account from the database
                     del db[key]
                     return True
         return False
 
     def login(self, email: str, password: str) -> str:
         with shelve.open(self.db_path) as db:
-            # Retrieve the account from the database
             for account in db.values():
-                # Check if the account exists and the password is correct
                 if account.email == email and account.password == password:
-                    # Return the user's ID
                     return account.id
-        # If the account does not exist or the password is incorrect, return None
         return None

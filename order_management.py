@@ -51,30 +51,24 @@ class OrderManagement:
             raise ValueError("user_identifier cannot be None")
         with shelve.open(self.db_file) as db:
             print("Opened database")
-            if self.user_identifier not in db:  # line 28
+            if self.user_identifier not in db:
                 print("User not found in database. Creating new entry.")
-                db[
-                    self.user_identifier
-                ] = []  # Create an empty list for the user if it doesn't exist
+                db[self.user_identifier] = []
             orders: List[OrderWithState] = db[self.user_identifier]
             print("Retrieved user's orders from database")
-            order_id = str(uuid.uuid4())  # Generate a unique order ID
+            order_id = str(uuid.uuid4())
             print("Generated order ID:", order_id)
-            order_date = datetime.now()  # Get the current date and time
+            order_date = datetime.now()
             print("Current date and time:", order_date)
-            estimated_arrival_date: datetime = datetime.now() + timedelta(
-                days=10
-            )  # Set the estimated arrival date to be 10 days from now
+            estimated_arrival_date: datetime = datetime.now() + timedelta(days=10)
             print("Estimated arrival date:", estimated_arrival_date)
             new_order = OrderWithState(
                 order_id, order, 0, order_date, estimated_arrival_date
-            )  # Create a new order with initial state 0
+            )
             print("Created new order:", new_order)
-            orders.append(new_order)  # Add the new order to the user's list of orders
+            orders.append(new_order)
             print("Added new order to user's list of orders")
-            db[
-                self.user_identifier
-            ] = orders  # Update the database with the modified list of orders
+            db[self.user_identifier] = orders
             print("Updated database with modified list of orders")
 
     def get_order(self, order_id: str) -> Optional[OrderWithState]:
@@ -83,16 +77,14 @@ class OrderManagement:
                 orders: List[OrderWithState] = db[self.user_identifier]
                 for order in orders:
                     if order.id == order_id:
-                        return order  # Return the order if found
-        return None  # Return None if the order is not found
+                        return order
+        return None
 
     def get_all_orders(self) -> List[OrderWithState]:
         with shelve.open(self.db_file) as db:
             if self.user_identifier in db:
-                return db[
-                    self.user_identifier
-                ]  # Return the list of orders for the user
-        return []  # Return an empty list if the user has no orders or is not found
+                return db[self.user_identifier]
+        return []
 
     def update_order(self, updated_order: OrderWithState) -> bool:
         with shelve.open(self.db_file) as db:
@@ -100,9 +92,7 @@ class OrderManagement:
                 orders: List[OrderWithState] = db[self.user_identifier]
                 for i, order in enumerate(orders):
                     if order.id == updated_order.id:
-                        orders[i] = updated_order  # Update the order in the list
-                        db[
-                            self.user_identifier
-                        ] = orders  # Update the database with the modified list of orders
-                        return True  # Return True to indicate successful update
-        return False  # Return False if the order is not found or the user is not found
+                        orders[i] = updated_order
+                        db[self.user_identifier] = orders
+                        return True
+        return False

@@ -29,11 +29,11 @@ class OrderWithState:
         self.state = state
         self.order_date = order_date
         self.estimated_arrival_date = estimated_arrival_date
-    
+
     def to_dict(self) -> dict:
         """
         Converts the OrderWithState object to a dictionary.
-        
+
         Returns:
             dict: The dictionary representation of the OrderWithState object.
         """
@@ -44,7 +44,7 @@ class OrderWithState:
             "order_date": self.order_date,
             "estimated_arrival_date": self.estimated_arrival_date,
         }
-    
+
     def __eq__(self, other: object) -> bool:
         if isinstance(other, OrderWithState):
             return (
@@ -69,7 +69,7 @@ class OrderManagement:
         """
         self.user_identifier = user_identifier
         self.db_file = db_file
-    
+
     def add_order(self, order: str) -> None:
         """
         Add a new order to the user's list of orders.
@@ -105,7 +105,7 @@ class OrderManagement:
             print("Added new order to user's list of orders")
             db[self.user_identifier] = orders
             print("Updated database with modified list of orders")
-    
+
     def get_order(self, order_id: str) -> Optional[OrderWithState]:
         """
         Get the order with the specified order ID.
@@ -124,7 +124,7 @@ class OrderManagement:
                     if order.id == order_id:
                         return order
         return None
-    
+
     def get_all_orders(self) -> List[OrderWithState]:
         """
         Get all orders of the user.
@@ -137,7 +137,7 @@ class OrderManagement:
             if self.user_identifier in db:
                 return db[self.user_identifier]
         return []
-    
+
     def update_order(self, updated_order: OrderWithState) -> bool:
         """
         Update an existing order.
@@ -158,3 +158,23 @@ class OrderManagement:
                         db[self.user_identifier] = orders
                         return True
         return False
+
+    def remove_order(self, order_id: str) -> bool:
+        """
+        Remove an order with the specified order ID.
+
+        Args:
+            order_id (str): The ID of the order to be removed.
+
+        Returns:
+            bool: True if the order is removed successfully, False otherwise.
+
+        """
+        with shelve.open(self.db_file) as db:
+            if self.user_identifier in db:
+                orders: List[OrderWithState] = db[self.user_identifier]
+                for i, order in enumerate(orders):
+                    if order.id == order_id:
+                        del orders[i]
+                        db[self.user_identifier] = orders
+                        return True

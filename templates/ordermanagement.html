@@ -38,6 +38,13 @@
         Estimated Arrival Date: <input type="date" id="updateEstimatedArrivalDate"><br>
         <input type="submit" value="Update Order">
     </form>
+
+    <h2>Remove Order</h2>
+    <form id="removeOrderForm">
+        User ID: <input type="text" id="removeUserId"><br>
+        Order ID: <input type="text" id="removeOrderId"><br>
+        <input type="submit" value="Remove Order">
+    </form>
     <script>
         $("#addOrderForm").submit(function (e) {
             e.preventDefault();
@@ -77,6 +84,22 @@
                 },
                 success: function (data) {
                     alert(data.message);
+                },
+                error: function (xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        });
+
+        $("#removeOrderForm").submit(function (e) {
+            e.preventDefault();
+            var userId = $("#removeUserId").val();
+            var orderId = $("#removeOrderId").val();
+            $.ajax({
+                url: "/remove_order/" + userId + "/" + orderId,
+                type: 'DELETE',
+                success: function (data) {
+                    alert(JSON.stringify(data));
                 },
                 error: function (xhr, status, error) {
                     alert('Error: ' + error);

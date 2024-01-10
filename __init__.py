@@ -149,5 +149,17 @@ def update_order():
     return jsonify({"message": "Order updated successfully"})
 
 
+@app.route("/remove_order/<user_id>/<order_id>", methods=["DELETE"])
+def remove_order(user_id, order_id):
+    print("user_id: " + str(user_id))
+    print("order_id: " + str(order_id))
+    order_management = OrderManagement(user_id, "orders")
+    result = order_management.remove_order(order_id)
+    if result:
+        return jsonify({"message": "Order removed successfully"}), 200
+    else:
+        return jsonify({"error": "Order not found"}), 404
+
+
 if __name__ == "__main__":
     app.run(debug=True)

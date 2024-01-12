@@ -93,6 +93,36 @@ def delete_account():
         return jsonify({"message": "Account ID is required"}), 400
 
 
+@app.route("/update_account", methods=["PUT"])
+def update_account():
+    print("updating acc")
+    data = request.json
+    account_id = data.get("account_id")
+    account_data = data.get("account")
+
+    if not account_id or not account_data:
+        return jsonify({"error": "Missing account_id or account data"}), 400
+
+    account = Account(
+        first_name=account_data.get("first_name"),
+        last_name=account_data.get("last_name"),
+        date_of_birth=datetime.strptime(account_data.get("date_of_birth"), "%Y-%m-%d"),
+        email=account_data.get("email"),
+        password=account_data.get("password"),
+        gender=int(account_data.get("gender")),
+        receive_newsletters=account_data.get("receive_newsletters"),
+        id=account_data.get("id"),
+    )
+
+    accounts_management = AccountsManagement("accounts")
+    result = accounts_management.update_account(account_id, account)
+
+    if result:
+        return jsonify({"message": "Account updated successfully"}), 200
+    else:
+        return jsonify({"error": "Account not found or data invalid"}), 404
+
+
 @app.route("/order_management")
 def order_management():
     return render_template("ordermanagement.html")

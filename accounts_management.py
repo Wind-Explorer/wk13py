@@ -31,8 +31,9 @@ class Account:
         password: str,
         gender: int,
         receive_newsletters: bool,
+        id: str = None,
     ):
-        self.id = str(uuid4())
+        self.id = id if id is not None else str(uuid4())
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth

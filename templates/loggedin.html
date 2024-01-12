@@ -9,6 +9,18 @@
 
 <body>
     <p>Logged in with ID of: {{ user_id }}</p>
+    <h2>Update Account</h2>
+    <form id="updateAccountForm">
+        Account ID: <input type="text" id="accountId"><br>
+        First Name: <input type="text" id="firstName"><br>
+        Last Name: <input type="text" id="lastName"><br>
+        Date of Birth: <input type="date" id="dateOfBirth"><br>
+        Email: <input type="email" id="email"><br>
+        Password: <input type="password" id="password"><br>
+        Gender: <input type="number" id="gender"><br>
+        Receive Newsletters: <input type="checkbox" id="receiveNewsletters"><br>
+        <input type="submit" value="Update Account">
+    </form>
     <button id="delete-account">Delete this account</button>
     <button id="fetch-account-info">Fetch Account Info</button>
     <div id="account-info"></div>
@@ -34,6 +46,31 @@
                     type: 'DELETE',
                     success: function (result) {
                         alert(result.message);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error);
+                    }
+                });
+            });
+            $("#updateAccountForm").submit(function (e) {
+                e.preventDefault();
+                var accountData = {
+                    first_name: $("#firstName").val(),
+                    last_name: $("#lastName").val(),
+                    date_of_birth: $("#dateOfBirth").val(),
+                    email: $("#email").val(),
+                    password: $("#password").val(),
+                    gender: $("#gender").val(),
+                    receive_newsletters: $("#receiveNewsletters").is(":checked"),
+                    id: $("#accountId").val()
+                };
+                $.ajax({
+                    url: "/update_account",
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ account_id: $("#accountId").val(), account: accountData }),
+                    success: function (data) {
+                        alert(JSON.stringify(data));
                     },
                     error: function (xhr, status, error) {
                         alert('Error: ' + error);

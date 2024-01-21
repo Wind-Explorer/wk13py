@@ -3,31 +3,51 @@
 
 <head>
     <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">    
 </head>
 
 <body>
-    <h1>Sign Up</h1>
-    <form action="/signup" method="post">
-        <label for="first_name">First Name:</label><br>
-        <input type="text" id="first_name" name="first_name" required><br>
-        <label for="last_name">Last Name:</label><br>
-        <input type="text" id="last_name" name="last_name" required><br>
-        <label for="date_of_birth">Date of Birth:</label><br>
-        <input type="date" id="date_of_birth" name="date_of_birth" required><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <label for="gender">Gender:</label><br>
-        <select id="gender" name="gender" required>
-            <option value="0">Male</option>
-            <option value="1">Female</option>
-            <option value="2">Prefer not to say</option>
-        </select><br>
-        <label for="receive_newsletters">Receive Newsletters:</label><br>
-        <input type="checkbox" id="receive_newsletters" name="receive_newsletters"><br>
-        <input type="submit" value="Sign Up">
-    </form>
+    {% include 'navbar.html' %}
+    <div class="container" style="max-width: 400px;">
+        <h1>Sign Up</h1>
+        <form action="/signup" method="post">
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                    <option value="2">Prefer not to say</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="receive_newsletters" name="receive_newsletters">
+                    <label class="form-check-label" for="receive_newsletters">Receive Newsletters</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
 </body>
 
 </html>

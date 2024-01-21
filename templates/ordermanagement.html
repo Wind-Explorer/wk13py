@@ -4,47 +4,93 @@
 <head>
     <title>Order Management</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 
 <body>
-    <h1>Order Management</h1>
+    {% include 'navbar.html' %}
+    <div class="container mb-4 mt-4" style="max-width: 400px;">     
+        <h2>Add Order</h2>
+        <form id="addOrderForm">
+            <div class="form-group">
+                <label for="addUserId">User ID:</label>
+                <input type="text" class="form-control" id="addUserId">
+            </div>
+            <div class="form-group">
+                <label for="newOrder">Order:</label>
+                <textarea class="form-control" id="newOrder"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Add Order</button>
+        </form>
+        
+        <hr/>
 
-    <h2>Add Order</h2>
-    <form id="addOrderForm">
-        User ID: <input type="text" id="addUserId"><br>
-        Order: <textarea id="newOrder"></textarea><br>
-        <input type="submit" value="Add Order">
-    </form>
+        <h2 class="mt-4">Get Order</h2>
+        <form id="getOrderForm">
+            <div class="form-group">
+                <label for="getUserId">User ID:</label>
+                <input type="text" class="form-control" id="getUserId">
+            </div>
+            <div class="form-group">
+                <label for="getOrderId">Order ID:</label>
+                <input type="text" class="form-control" id="getOrderId">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Get Order</button>
+        </form>
+        
+        <hr/>
 
-    <h2>Get Order</h2>
-    <form id="getOrderForm">
-        User ID: <input type="text" id="getUserId"><br>
-        Order ID: <input type="text" id="getOrderId"><br>
-        <input type="submit" value="Get Order">
-    </form>
-
-    <h2>Get All Orders</h2>
-    <form id="getAllOrdersForm">
-        User ID: <input type="text" id="getAllUserId"><br>
-        <input type="submit" value="Get All Orders">
-    </form>
-
-    <h2>Update Order</h2>
-    <form id="updateOrderForm">
-        User ID: <input type="text" id="updateUserId"><br>
-        Order ID: <input type="text" id="updateOrderId"><br>
-        State: <input type="text" id="updateState"><br>
-        Order Date: <input type="date" id="updateOrderDate"><br>
-        Estimated Arrival Date: <input type="date" id="updateEstimatedArrivalDate"><br>
-        <input type="submit" value="Update Order">
-    </form>
-
-    <h2>Remove Order</h2>
-    <form id="removeOrderForm">
-        User ID: <input type="text" id="removeUserId"><br>
-        Order ID: <input type="text" id="removeOrderId"><br>
-        <input type="submit" value="Remove Order">
-    </form>
+        <h2 class="mt-4">Get All Orders</h2>
+        <form id="getAllOrdersForm">
+            <div class="form-group">
+                <label for="getAllUserId">User ID:</label>
+                <input type="text" class="form-control" id="getAllUserId">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Get All Orders</button>
+        </form>
+        
+        <hr/>
+        
+        <h2 class="mt-4">Update Order</h2>
+        <form id="updateOrderForm">
+            <div class="form-group">
+                <label for="updateUserId">User ID:</label>
+                <input type="text" class="form-control" id="updateUserId">
+            </div>
+            <div class="form-group">
+                <label for="updateOrderId">Order ID:</label>
+                <input type="text" class="form-control" id="updateOrderId">
+            </div>
+            <div class="form-group">
+                <label for="updateState">State:</label>
+                <input type="text" class="form-control" id="updateState">
+            </div>
+            <div class="form-group">
+                <label for="updateOrderDate">Order Date:</label>
+                <input type="date" class="form-control" id="updateOrderDate">
+            </div>
+            <div class="form-group">
+                <label for="updateEstimatedArrivalDate">Estimated Arrival Date:</label>
+                <input type="date" class="form-control" id="updateEstimatedArrivalDate">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update Order</button>
+        </form>
+        
+        <hr/>
+        
+        <h2 class="mt-4">Remove Order</h2>
+        <form id="removeOrderForm">
+            <div class="form-group">
+                <label for="removeUserId">User ID:</label>
+                <input type="text" class="form-control" id="removeUserId">
+            </div>
+            <div class="form-group">
+                <label for="removeOrderId">Order ID:</label>
+                <input type="text" class="form-control" id="removeOrderId">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Remove Order</button>
+        </form>
+    </div>
     <script>
         $("#addOrderForm").submit(function (e) {
             e.preventDefault();

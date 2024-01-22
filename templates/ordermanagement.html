@@ -99,7 +99,7 @@
                     alert("Order added successfully");
                 });
         });
-
+        
         $("#getOrderForm").submit(function (e) {
             e.preventDefault();
             $.get("/get_order", { user_id: $("#getUserId").val(), order_id: $("#getOrderId").val() })
@@ -107,7 +107,7 @@
                     alert(JSON.stringify(data));
                 });
         });
-
+        
         $("#getAllOrdersForm").submit(function (e) {
             e.preventDefault();
             $.get("/get_all_orders", { user_id: $("#getAllUserId").val() })
@@ -115,7 +115,7 @@
                     alert(JSON.stringify(data));
                 });
         });
-
+        
         $("#updateOrderForm").submit(function (e) {
             e.preventDefault();
             $.ajax({
@@ -152,6 +152,22 @@
                 }
             });
         });
+
+        $("#updateUserId, #updateOrderId").change(function () {
+        var userId = $("#updateUserId").val();
+        var orderId = $("#updateOrderId").val();
+
+        // 如果用户 ID 和订单 ID 都已填写，发送 AJAX 请求
+        if (userId && orderId) {
+            $.get("/get_order", { user_id: userId, order_id: orderId })
+                .done(function (data) {
+                    // 使用获取到的数据填充表单
+                    $("#updateState").val(data.state);
+                    $("#updateOrderDate").val(new Date(data.order_date).toISOString().substring(0, 10));
+                    $("#updateEstimatedArrivalDate").val(new Date(data.estimated_arrival_date).toISOString().substring(0, 10));
+                });
+        }
+    });
     </script>
 </body>
 

@@ -10,7 +10,6 @@
 
 <body>
     {% include 'navbar.html' %}
-    <p>{{ user_id }}</p>
     <div class="container" style="max-width: 400px;">
     <h2>Update Account</h2>
     <form id="updateAccountForm" class="mt-4">
@@ -60,8 +59,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            var userid = "{{ user_id }}";  // 获取用户 ID
             $("#fetch-account-info").click(function () {
-                var userid = "{{ user_id }}";  // 获取用户 ID
                 $.get("/get_account_info?userid=" + userid, function (data, status) {
                     var accountInfoHtml = "";
                     for (var key in data) {
@@ -72,7 +71,6 @@
             });
 
             $("#delete-account").click(function () {
-                var userid = "{{ user_id }}";  // 获取用户 ID
                 $.ajax({
                     url: '/delete_account?account_id=' + userid,
                     type: 'DELETE',
@@ -108,6 +106,19 @@
                         alert('Error: ' + error);
                     }
                 });
+            });
+
+            // 获取用户的现有账户信息
+            $.get("/get_account_info?userid=" + userid, function (data, status) {
+                // 使用获取到的数据填充表单
+                $("#accountId").val(userid);
+                $("#firstName").val(data.first_name);
+                $("#lastName").val(data.last_name);
+                $("#dateOfBirth").val(new Date(data.date_of_birth).toISOString().substring(0, 10));
+                $("#email").val(data.email);
+                $("#password").val(data.password);
+                $("#gender").val(data.gender);
+                $("#receiveNewsletters").prop('checked', data.receive_newsletters);
             });
         });
     </script>

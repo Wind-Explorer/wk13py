@@ -4,18 +4,20 @@
 <head>
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
     {% include 'navbar.html' %}
-    <div class="container mx-auto p-4 rounded-lg" style="max-width: 400px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);">
+    <div class="container mx-auto p-4 mb-4 rounded-lg" style="max-width: 400px; max-height: 650px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);">
         <h3 class="text-center">Welcome!</h3>
         <div class="d-flex flex-row mt-2" style="margin-left: 70px;">
             <p>Already have an account?</p>
             <a class="ml-2" href="/login">Log in</a>
         </div>
         <hr/>
-        <form action="/signup" method="post">
+        <form action="/signup" method="post" class="mb-4">
             <div class="d-flex flex-row">
                 <div class="form-group mr-1">
                     <label for="first_name">First Name:</label>
@@ -56,7 +58,29 @@
             </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
             </form>
-    </div>
-</body>
-
+            <p>By signing up, you agree to our <a class="text-primary" data-toggle="modal" data-target="#termsModal">Terms & Services</a></p>
+            </body>
+            <div class="modal modal-dialog modal-dialog-scrollable fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="termsModalLabel">Terms & Services</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Insert your terms and services content here -->
+                            <p>
+                                What is Lorem Ipsum?
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </html>
